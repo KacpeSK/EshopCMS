@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 import {
   selectCategoriesMap,
   selectCategoriesIsLoading,
-} from "../../store/categories/category.selector.jsx";
-import CategoryPreview from "../../components/category-preview/category-preview.component.jsx";
-import Spinner from "../../components/spinner/spinner.component.jsx";
+} from "../../store/categories/category.selector";
+import CategoryPreview from "../../components/category-preview/category-preview.component";
+import Spinner from "../../components/spinner/spinner.component";
 
 import "./categories-preview.styles.scss";
 

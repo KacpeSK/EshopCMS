@@ -5,10 +5,10 @@ import { useSelector } from "react-redux";
 import {
   selectCategoriesMap,
   selectCategoriesIsLoading,
-} from "../../store/categories/category.selector.jsx";
+} from "../../store/categories/category.selector";
 
 import ProductCard from "../../components/product-card/product-card.component";
-import Spinner from "../../components/spinner/spinner.component.jsx";
+import Spinner from "../../components/spinner/spinner.component";
 
 import "./category.styles.scss";
 

@@ -9,6 +9,8 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  NextOrObserver,
+  User,
 } from "firebase/auth";
 
 import {
@@ -20,7 +22,10 @@ import {
   writeBatch,
   query,
   getDocs,
+  QueryDocumentSnapshot,
 } from "firebase/firestore";
+
+import { Category } from "../../store/categories/category.types";
 
 import.meta.env.VITE_apiKey;
 
@@ -52,9 +57,13 @@ export const signInWithGoogleRedirect = () =>
 
 export const db = getFirestore();
 
-export const addCollectionAndDocuments = async (
-  collectionKey,
-  objectsToAdd
+export type ObjectToAdd = {
+  title: string;
+};
+
+export const addCollectionAndDocuments = async <T extends ObjectToAdd>(
+  collectionKey: string,
+  objectsToAdd: T[]
 ) => {
   const collectionRef = collection(db, collectionKey);
   const batch = writeBatch(db);
@@ -67,18 +76,30 @@ export const addCollectionAndDocuments = async (
   console.log("done");
 };
 
-export const getCategoriesAndDocuments = async () => {
+export const getCategoriesAndDocuments = async (): Promise<Category[]> => {
   const collectionRef = collection(db, "categories");
   const q = query(collectionRef);
 
   const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map((docSnapshot) => docSnapshot.data());
+  return querySnapshot.docs.map(
+    (docSnapshot) => docSnapshot.data() as Category
+  );
+};
+
+export type AdditionalData = {
+  displayName?: string;
+};
+
+export type UserData = {
+  dispalyName: string;
+  email: string;
+  createdAt: Date;
 };
 
 export const createUserDocumentFromAuth = async (
-  userAuth,
-  additionalData = {}
-) => {
+  userAuth: User,
+  additionalData: AdditionalData = {}
+): Promise<QueryDocumentSnapshot<UserData> | void> => {
   /* additionalData is optional, if we dont get display name from userAuth (if we do sign in with email and password we wont)
    we can pass this additionl information and use it later in function*/
   if (!userAuth) return;
@@ -100,21 +121,27 @@ export const createUserDocumentFromAuth = async (
       });
       /* we spreaded additionalData to use it if we wont get display name from Auth (look comment above)*/
     } catch (error) {
-      console.log("There s error creating a user: ", error.message);
+      console.log("There s error creating a user: ", error);
     }
   }
 
-  return userSnapshot;
+  return userSnapshot as QueryDocumentSnapshot<UserData>;
 };
 
-export const createAuthUserWithEmailAndPassword = async (email, password) => {
+export const createAuthUserWithEmailAndPassword = async (
+  email: string,
+  password: string
+) => {
   if (!email || !password) {
     return;
   }
   return await createUserWithEmailAndPassword(auth, email, password);
 };
 
-export const signInUserWithEmailAndPassword = async (email, password) => {
+export const signInUserWithEmailAndPassword = async (
+  email: string,
+  password: string
+) => {
   if (!email || !password) {
     return;
   }
@@ -123,14 +150,14 @@ export const signInUserWithEmailAndPassword = async (email, password) => {
 
 export const signOutUser = async () => await signOut(auth);
 
-export const onAuthStateChangedListener = (callback) => {
+export const onAuthStateChangedListener = (callback: NextOrObserver<User>) => {
   if (callback) {
     onAuthStateChanged(auth, callback);
   }
   return;
 };
 
-export const getCurrentUser = () => {
+export const getCurrentUser = (): Promise<User | null> => {
   return new Promise((resolve, reject) => {
     const unsubscribe = onAuthStateChanged(
       auth,
