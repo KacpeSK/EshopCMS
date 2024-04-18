@@ -1,6 +1,12 @@
+import { FC } from "react";
+import { CartItem as CartItemType } from "../../store/cart/cart.types";
 import "./cart-item.styles.scss";
 
-const CartItem = ({ cartItem }) => {
+export type CartItemProps = {
+  cartItem: CartItemType;
+};
+
+const CartItem: FC<CartItemProps> = ({ cartItem }) => {
   const { name, imageUrl, price, quantity } = cartItem;
   return (
     <>

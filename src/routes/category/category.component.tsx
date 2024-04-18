@@ -9,14 +9,21 @@ import {
 
 import ProductCard from "../../components/product-card/product-card.component";
 import Spinner from "../../components/spinner/spinner.component";
+import { CategoryItem } from "../../store/categories/category.types";
 
 import "./category.styles.scss";
 
+type CategoryRouteParams = {
+  category: string;
+};
+
 const Category = () => {
-  const { category } = useParams();
+  const { category } = useParams<
+    keyof CategoryRouteParams
+  >() as CategoryRouteParams;
   const categoriesMap = useSelector(selectCategoriesMap);
   const isLoading = useSelector(selectCategoriesIsLoading);
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<CategoryItem[]>([]);
 
   useEffect(() => {
     if (Object.keys(categoriesMap).length === 0) return;

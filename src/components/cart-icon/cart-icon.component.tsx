@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
+import { FC } from "react";
 
 import { setIsCartOpen } from "../../store/cart/cart.action";
 import { selectCartCount } from "../../store/cart/cart.selector";
@@ -28,7 +29,15 @@ const CartIcon = () => {
 
 export default CartIcon;
 
-const CartLogo = ({ className }) => {
+export type CartLogoProps = {
+  className: string;
+};
+
+const CartLogo: FC<CartLogoProps> = ({ className }) => {
+  const styles = {
+    enableBackground: "new 0 0 407.453 407.453",
+    fill: "#010002",
+  };
   return (
     <>
       <svg
@@ -40,10 +49,7 @@ const CartLogo = ({ className }) => {
         x="0px"
         y="0px"
         viewBox="0 0 407.453 407.453"
-        style={{
-          enableBackground: "new 0 0 407.453 407.453",
-          fill: "#010002",
-        }}
+        style={styles}
         xmlSpace="preserve"
       >
         <g>

@@ -2,7 +2,14 @@ import CategoryItem from "../category-item/category-item";
 
 import "./category-menu-styles.scss";
 
-const categories = [
+export type MenuCategory = {
+  id: number;
+  title: string;
+  imageUrl: string;
+  route: string;
+};
+
+const categories: MenuCategory[] = [
   {
     id: 1,
     title: "hats",

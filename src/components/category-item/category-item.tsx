@@ -1,8 +1,14 @@
+import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { MenuCategory } from "../category-menu/category-menu";
 import "./category-item-styles.scss";
 
-const CategoryItem = ({ category }) => {
+export type CategoryItemProps = {
+  category: MenuCategory;
+};
+
+const CategoryItem: FC<CategoryItemProps> = ({ category }) => {
   const { imageUrl, title, route } = category;
   const navigate = useNavigate();
 

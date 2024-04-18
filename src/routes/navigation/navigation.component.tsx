@@ -1,5 +1,6 @@
 import { Outlet, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { FC } from "react";
 
 import { signOutStart } from "../../store/user/user.action";
 
@@ -27,7 +28,7 @@ const Navigation = () => {
           className="logo-container"
           to="/"
         >
-          <Logo className="logo" />
+          <Logo cssClass="logo" />
         </Link>
         <div className="nav-links-container">
           <Link
@@ -62,9 +63,13 @@ const Navigation = () => {
 
 export default Navigation;
 
-const Logo = () => {
+export type LogoProps = {
+  cssClass: string;
+};
+const Logo: FC<LogoProps> = ({ cssClass, ...otherProps }) => {
   return (
     <svg
+      className={cssClass}
       width="50px"
       height="39px"
       viewBox="0 0 50 39"
